@@ -21,7 +21,7 @@ def main():
             board[tuple(knight_pos)] = j
             possible_moves = generate_possible_moves(knight_pos, board, rows, cols)
 
-            if possible_moves == []:
+            if possible_moves == ():
                 break
 
             move = random.choice(possible_moves)
@@ -29,11 +29,16 @@ def main():
             knight_pos[0] += move[0]
             knight_pos[1] += move[1]
 
+        # at this point, all possible moves have been performed, and the knight's
+        # tour is either complete or incomplete
         if None not in board.values():
+            print "attempt #" + str(attempt + 1)
             print "Knight's tour complete!"
             print_board(board, rows, cols)
             sys.exit()
 
+    # if this point is reached (i.e. sys.exit() is not called because a
+    # complete tour was not found) then the knight's tour failed
     print "knight's tour failed!"
     print_board(board, rows, cols)
 
@@ -41,9 +46,9 @@ def main():
 def generate_possible_moves(knight_pos, board, rows, cols):
     """Generate a list of possible moves from a given position."""
 
-    possible_moves = [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
-                      (1, -2), (1, 2)]
-    rv = []
+    possible_moves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
+                      (1, -2), (1, 2))
+    rv = ()
 
     for (movex, movey) in possible_moves:
         knight_pos[0] += movex
@@ -54,7 +59,7 @@ def generate_possible_moves(knight_pos, board, rows, cols):
             knight_pos[0] < rows and
             knight_pos[1] < cols and
             board[tuple(knight_pos)] == None):
-            rv.append((movex, movey))
+            rv += ((movex, movey),)
 
         #reset knight_pos to check the next move
         knight_pos[0] -= movex
