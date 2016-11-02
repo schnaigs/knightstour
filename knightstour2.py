@@ -12,28 +12,15 @@ def main():
     attempts = int(sys.argv[3])
 
     for i in range(attempts):
+        print "attempt number: " + str(i)
         board = create_board(rows, cols)
         knight = [0, 0]
         board[knight[0]][knight[1]] = 0
 
-        for j in range(rows * cols):
+        for j in range((rows * cols) - 1):
             knight = move(knight, board, rows, cols)
- 
-            if knight == "fail!":
-                for row in board:
-                    for pos in row:
-                        if pos == None:
-                            print_raw_board(board)
-                            print
-                            break
-                    break
-                break
-                print "knight's tour complete!"
-                print_raw_board(board)
-                print
-                break
-            else:
-                board[knight[0]][knight[1]] = j + 1
+             
+        print_board(board)
 
 
 def create_board(r, c):
@@ -50,7 +37,7 @@ def move(k, b, r, c):
     for (movex, movey) in possible_moves:
         k[0] = k[0] + movex
         k[1] = k[1] + movey
-
+ 
         if (k[0] >= 0 and 
             k[1] >= 0 and 
             k[0] < r and 
