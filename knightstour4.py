@@ -15,7 +15,6 @@ def main():
 
     for attempt in range(attempts):
         board = create_board(rows, cols)
-
         knight_pos = [0, 0]
 
         for j in range(rows * cols):
@@ -28,8 +27,8 @@ def main():
 
             move = random.choice(possible_moves)
 
-            knight_pos[0] = knight_pos[0] + move[0]
-            knight_pos[1] = knight_pos[1] + move[1]
+            knight_pos[0] += move[0]
+            knight_pos[1] += move[1]
 
         if None not in board.values():
             print "Knight's tour complete!"
@@ -48,8 +47,8 @@ def generate_possible_moves(knight_pos, board, rows, cols):
     rv = []
 
     for (movex, movey) in possible_moves:
-        knight_pos[0] = knight_pos[0] + movex
-        knight_pos[1] = knight_pos[1] + movey
+        knight_pos[0] += movex
+        knight_pos[1] += movey
 
         if (knight_pos[0] >= 0 and
             knight_pos[1] >= 0 and
@@ -59,8 +58,8 @@ def generate_possible_moves(knight_pos, board, rows, cols):
             rv.append((movex, movey))
 
         #reset knight_pos to check the next move
-        knight_pos[0] = knight_pos[0] - movex
-        knight_pos[1] = knight_pos[1] - movey
+        knight_pos[0] -= movex
+        knight_pos[1] -= movey
 
     return rv
 
