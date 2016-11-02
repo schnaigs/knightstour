@@ -19,7 +19,6 @@ def main():
 
         for j in range(rows * cols):
             board[tuple(knight_pos)] = j
-
             possible_moves = generate_possible_moves(knight_pos, board, rows, cols)
 
             if possible_moves == []:
@@ -82,12 +81,12 @@ def create_board(rows, cols):
     """
 
     keys = [(a, b) for a in range(rows) for b in range(cols)]
-    board = {key : None for key in keys}
-    return board
+    return {key : None for key in keys}
 
 
 def valid_input():
     """Returns True if input is valid, False otherwise."""
+
     if len(sys.argv) != 4:
         return False
 
@@ -97,7 +96,6 @@ def valid_input():
         return False
 
     if r < 1 or c < 1 or a < 0:
-
         return False
 
     return True
