@@ -7,7 +7,7 @@ def main():
     """
 
     if not valid_input():
-        sys.exit("usage: knightstour4.py rows columns attempts")
+        sys.exit("usage: python knightstour4.py rows columns attempts")
 
     rows = int(sys.argv[1])
     cols = int(sys.argv[2])
@@ -48,24 +48,22 @@ def generate_possible_moves(knight_pos, board, rows, cols):
 
     possible_moves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
                       (1, -2), (1, 2))
-    rv = ()
+    actual_possible_moves = ()
 
     for (movex, movey) in possible_moves:
         knight_pos[0] += movex
         knight_pos[1] += movey
 
-        if (knight_pos[0] >= 0 and
-            knight_pos[1] >= 0 and
-            knight_pos[0] < rows and
-            knight_pos[1] < cols and
+        if (0 <= knight_pos[0] < rows and
+            0 <= knight_pos[1] < rows and
             board[tuple(knight_pos)] == None):
-            rv += ((movex, movey),)
+            actual_possible_moves += ((movex, movey),)
 
         #reset knight_pos to check the next move
         knight_pos[0] -= movex
         knight_pos[1] -= movey
 
-    return rv
+    return actual_possible_moves
 
 
 def print_board(board, rows, cols):
