@@ -14,7 +14,6 @@ def main():
     attempts = int(sys.argv[3])
 
     for attempt in range(attempts):
-        print "attempt #" + str(attempt)
         board = create_board(rows, cols)
 
         knight_pos = [0, 0]
@@ -32,12 +31,13 @@ def main():
             knight_pos[0] = knight_pos[0] + move[0]
             knight_pos[1] = knight_pos[1] + move[1]
 
-        if None in board.values():
-            print "Knight's tour failed!"
-        else:
+        if None not in board.values():
             print "Knight's tour complete!"
+            print_board(board, rows, cols)
+            sys.exit()
 
-        print_board(board, rows, cols)
+    print "knight's tour failed!"
+    print_board(board, rows, cols)
 
 
 def generate_possible_moves(knight_pos, board, rows, cols):
