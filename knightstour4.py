@@ -3,7 +3,7 @@ import string
 import sys
 
 def main():
-    """Conduct a knight's tour using a brute force method, representing the 
+    """Conduct a knight's tour using a brute force method, representing the
        board as a dict."""
 
     if not valid_input():
