@@ -3,10 +3,11 @@ import string
 import sys
 
 def main():
-    """Conduct a knight's tour using a brute force method and backtracking,
-       representing the board as a dict."""
+    """Conduct a knight's tour using a brute force method, representing the 
+       board as a dict."""
+
     if not valid_input():
-        sys.exit("usage: knightstour4.py rows columns")
+        sys.exit("usage: knightstour4.py rows columns attempts")
 
     rows = int(sys.argv[1])
     cols = int(sys.argv[2])
@@ -18,8 +19,6 @@ def main():
 
         knight_pos = [0, 0]
 
-        # (rows * cols) - 1 is the only amount of moves it takes to complete an
-        # open knight's tour
         for j in range(rows * cols):
             board[tuple(knight_pos)] = j
 
@@ -38,10 +37,12 @@ def main():
         else:
             print "Knight's tour complete!"
 
-        print_raw_board(board, rows, cols)
+        print_board(board, rows, cols)
 
 
 def generate_possible_moves(knight_pos, board, rows, cols):
+    """Generate a list of possible moves from a given position."""
+
     possible_moves = [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
                       (1, -2), (1, 2)]
     rv = []
@@ -64,15 +65,22 @@ def generate_possible_moves(knight_pos, board, rows, cols):
     return rv
 
 
-def print_raw_board(board, rows, cols):
-    keys_sorted = sorted(board.keys())
+def print_board(board, rows, cols):
+    """Pretty-print a representation of the board."""
+
     for i in range(rows):
         for j in range(cols):
-            print "{:4}".format(str(board[(i, j)])),
+            if board[i, j] == None:
+                print '{:3}'.format('x'),
+            else:
+                print '{:3}'.format(str(board[(i, j)])),
         print
 
 
 def create_board(rows, cols):
+    """Represents a board as a dictionary, mapping tuples representing positions
+       on the board to values representing a potential position for the knight."""
+
     keys = [(a, b) for a in range(rows) for b in range(cols)]
     board = {key : None for key in keys}
     return board
