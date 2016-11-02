@@ -48,6 +48,7 @@ def generate_possible_moves(knight_pos, board, rows, cols):
 
     possible_moves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
                       (1, -2), (1, 2))
+
     actual_possible_moves = ()
 
     for (movex, movey) in possible_moves:
@@ -55,7 +56,7 @@ def generate_possible_moves(knight_pos, board, rows, cols):
         knight_pos[1] += movey
 
         if (0 <= knight_pos[0] < rows and
-            0 <= knight_pos[1] < rows and
+            0 <= knight_pos[1] < cols and
             board[tuple(knight_pos)] == None):
             actual_possible_moves += ((movex, movey),)
 
@@ -71,7 +72,7 @@ def print_board(board, rows, cols):
 
     for i in range(rows):
         for j in range(cols):
-            if board[i, j] == None:
+            if board[(i, j)] == None:
                 print '{:3}'.format('x'),
             else:
                 print '{:3}'.format(str(board[(i, j)])),
