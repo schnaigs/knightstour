@@ -4,7 +4,8 @@ import sys
 
 def main():
     """Conduct a knight's tour using a brute force method, representing the
-       board as a dict."""
+       board as a dict.
+    """
 
     if not valid_input():
         sys.exit("usage: knightstour4.py rows columns attempts")
@@ -79,7 +80,8 @@ def print_board(board, rows, cols):
 
 def create_board(rows, cols):
     """Represents a board as a dictionary, mapping tuples representing positions
-       on the board to values representing a potential position for the knight."""
+       on the board to values representing a potential position for the knight.
+    """
 
     keys = [(a, b) for a in range(rows) for b in range(cols)]
     board = {key : None for key in keys}
