@@ -5,7 +5,7 @@ import sys
 def main():
     """Conduct a knight's tour using a brute force method."""
     if not valid_input(sys.argv):
-        sys.exit("usage: knightstour2.py rows columns attempts")
+        sys.exit("usage: python knightstour2.py rows columns attempts")
 
     rows = int(sys.argv[1])
     cols = int(sys.argv[2])
@@ -14,13 +14,29 @@ def main():
     for i in range(attempts):
         print "attempt number: " + str(i)
         board = create_board(rows, cols)
-        knight = [0, 0]
-        board[knight[0]][knight[1]] = 0
+        knight_pos = [0, 0]
+        board[knight_pos[0]][knight_pos[1]] = i
 
-        for j in range((rows * cols) - 1):
-            knight = move(knight, board, rows, cols)
+        for j in range(rows * cols):
+            possible_moves = generate_possible_moves(knight_pos, board, rows, cols)
+
+            if possible_moves == []:
+                break
+
+            move = random.choice(possible_moves)
+
+            knight_pos[0] += move[0]
+            knight_pos[1] += move[1]
              
-        print_board(board)
+        list_of_positions = sum([], board)
+        if None not in list_of_positions:
+            print "attempt #" + str(i + 1)
+            print "Knight's tour complete!"
+            print_raw_board(board)
+            sys.exit()
+
+    print "knight's tour failed!"
+    print_raw_board(board)
 
 
 def create_board(r, c):
@@ -29,7 +45,7 @@ def create_board(r, c):
     return b
 
 
-def move(k, b, r, c):
+def generate_possible_moves(k, b, r, c):
     possible_moves = [(-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
                       (1, -2), (1, 2)]
 
@@ -38,10 +54,8 @@ def move(k, b, r, c):
         k[0] = k[0] + movex
         k[1] = k[1] + movey
  
-        if (k[0] >= 0 and 
-            k[1] >= 0 and 
-            k[0] < r and 
-            k[1] < c and 
+        if (0 <= k[0] < r and 
+            0 <= k[1] < c and 
             b[k[0]][k[1]] == None):
             actual_possible_moves.append((movex, movey))
 
@@ -49,14 +63,7 @@ def move(k, b, r, c):
         k[0] = k[0] - movex
         k[1] = k[1] - movey
 
-    if actual_possible_moves == []:
-        return "fail!"
-
-    the_move = random.choice(actual_possible_moves)
-    k[0] = k[0] + the_move[0]
-    k[1] = k[1] + the_move[1]
-
-    return k
+    return actual_possible_moves
 
 
 def print_board(b):
