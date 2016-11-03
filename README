@@ -1,0 +1,81 @@
+Allison Schinagle
+CS265 Assignment 2: Knight's Tour
+
+For dimensions 9 or less, I found valid knights tours on the following sized 
+boards:
+3x4    4x5    5x5    6x6    7x7    8x8*   9x9
+3x7    4x6    5x6    6x7    7x8    8x9
+3x8    4x7    5x7    6x8    7x9
+3x9    4x8    5x8    6x9
+       4x9    5x9
+
+* a normal chess board
+
+even though https://en.wikipedia.org/wiki/Knight%27s_tour says that
+"for any m × n board with m ≤ n, a closed knight's tour is always possible unless 
+ one or more of these three conditions are met:
+
+1. m and n are both odd
+2. m = 1, 2, or 4
+3. m = 3 and n = 4, 6, or 8."
+
+Under this rule, boards 3x4, 3x7, 3x8, 3x9, 4x5, 5x5, 5x7, 5x9, 7x7, and 9x9
+would not have valid knights tours, but obviously they do; in this very same
+Wikipedia article, it is stated:
+"The number of directed open tours on an n times n board for n = 1, 2, … are:
+
+1, 0, 0, 0, 1728, 6637920, 165575218320, 19591828170979904. 
+(sequence A165134 in the OEIS)."
+
+Note that a 5x5 board is noted as having solutions. So, I was pretty confused by
+that. 
+
+
+Moving on to my actual program. First we validate input; I wish I had written
+something like "rows = checkarg(sys.argv[1])" etc. because within my
+valid_input() function, I attempt to cast sys.argv[1:] to int anyway, so if
+that's successful I should just be able to return the value. 
+
+Anyway, then we assign the command line arguments to more readable names.
+
+Then we attempt a knight's tour.
+
+First step is to create a board, so now let's look at create_board(rows, cols). 
+
+I chose to represent the board as a dictionary mapping tuples representing
+positions on a board to values (initialized to None) representing potential
+positions for the knight. Tuples are immutable, positions on a board are
+immutable, so that's perfect. I chose this representation to make it easier to
+check if None was still in the board at the end of an attempt at a knight's
+tour; if so, the tour was not completed. If I had chosen to represent the board
+as a two-dimensional array, which I tried to do the first three times I tried
+to write this, I would have had to flatten the array and then check for None,
+or something. When I tried that, I still couldn't get the tour to work, and I 
+didn't feel like finding out why; my dictionary representation of the board 
+works just fine. 
+
+We initialize the knight's position to the tuple (0, 0). I used a list at 
+first, since I figured, I'll want to change the knight's position, but I use a 
+tuple and assign knight_pos a completely new tuple when it moves instead, so that
+I don't have to cast knight_pos to a tuple every time I want to access
+board[knight_pos], cause it looks prettier that way. And cause immutable
+data structures are just generally better, for reasons. ¯\_(ツ)_/¯
+
+Then we start a loop to move the knight a bunch of times. The loop will run
+either exactly as many times as there are moves to complete a knight's tour,
+or until there are no more possible moves. 
+
+I would have liked to create a more opaque board class so that I wouldn't have
+to pass around rows and cols along with the board, but I'm not proficient
+in python enough to make that happen in a reasonable amount of time. 
+
+Instead of passing knight to a move function and returning either its new
+position or "fail!" (which is how I tried to do it the first three times I
+tried writing this) I just generate a list of possible moves, so I can use that
+within the knight-moving-loop to check if there are no more possible moves, and
+if there are, pick one and move the knight using that move. Hmm, I wonder if I
+could have written a function that goes like, 
+board = conduct_knights_tour(board, initial_pos, rows, cols). 
+That might look nicer and read more easily.
+
+

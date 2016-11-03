@@ -15,19 +15,10 @@ def main():
 
     for attempt in range(attempts):
         board = create_board(rows, cols)
-        knight_pos = [0, 0]
+        initial_pos = (0, 0)
 
-        for j in range(rows * cols):
-            board[tuple(knight_pos)] = j
-            possible_moves = generate_possible_moves(knight_pos, board, rows, cols)
+        board = conduct_knights_tour(board, initial_pos, rows, cols)
 
-            if possible_moves == ():
-                break
-
-            move = random.choice(possible_moves)
-
-            knight_pos[0] += move[0]
-            knight_pos[1] += move[1]
 
         # at this point, all possible moves have been performed, and the knight's
         # tour is either complete or incomplete
@@ -43,7 +34,26 @@ def main():
     print_board(board, rows, cols)
 
 
-def generate_possible_moves(knight_pos, board, rows, cols):
+def conduct_knights_tour(board, knight_pos, rows, cols):
+    """Conduct the actual knight's tour, return a board with either a complete or
+       incomplete knight's tour.
+    """
+
+    for j in range(rows * cols):
+        board[knight_pos] = j
+        possible_moves = generate_possible_moves(knight_pos, board, rows, cols)
+
+        if possible_moves == ():
+            break
+
+        move = random.choice(possible_moves)
+
+        knight_pos = (knight_pos[0] + move[0], knight_pos[1] + move[1])
+
+    return board
+
+
+def generate_possible_moves(initial_pos, board, rows, cols):
     """Generate a list of possible moves from a given position."""
 
     possible_moves = ((-2, -1), (-2, 1), (-1, -2), (-1, 2), (2, -1), (2, 1),
@@ -52,17 +62,12 @@ def generate_possible_moves(knight_pos, board, rows, cols):
     actual_possible_moves = ()
 
     for (movex, movey) in possible_moves:
-        knight_pos[0] += movex
-        knight_pos[1] += movey
+        test_pos = (initial_pos[0] + movex, initial_pos[1] + movey)
 
-        if (0 <= knight_pos[0] < rows and
-            0 <= knight_pos[1] < cols and
-            board[tuple(knight_pos)] == None):
+        if (0 <= test_pos[0] < rows and
+            0 <= test_pos[1] < cols and
+            board[test_pos] == None):
             actual_possible_moves += ((movex, movey),)
-
-        #reset knight_pos to check the next move
-        knight_pos[0] -= movex
-        knight_pos[1] -= movey
 
     return actual_possible_moves
 
@@ -95,11 +100,13 @@ def valid_input():
         return False
 
     try:
-        r, c, a = int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])
+        int(sys.argv[1])
+        int(sys.argv[2])
+        int(sys.argv[3])
     except ValueError:
         return False
 
-    if r < 1 or c < 1 or a < 0:
+    if sys.argv[1] < 1 or sys.argv[2] < 1 or sys.argv[3] < 1:
         return False
 
     return True
