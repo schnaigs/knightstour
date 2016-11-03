@@ -76,7 +76,7 @@ def print_board(board, rows, cols):
 
     for i in range(rows):
         for j in range(cols):
-            if board[(i, j)] == None:
+            if board[(i, j)] is None:
                 print '{:3}'.format('x'),
             else:
                 print '{:3}'.format(str(board[(i, j)])),
