@@ -19,7 +19,6 @@ def main():
 
         board = conduct_knights_tour(board, initial_pos, rows, cols)
 
-
         # at this point, all possible moves have been performed, and the knight's
         # tour is either complete or incomplete
         if None not in board.values():
