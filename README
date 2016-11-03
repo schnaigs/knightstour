@@ -106,10 +106,45 @@ my first version. But that's not what the output in the assignment looked like,
 and ultimately the output in the assignment is a more sensible representation
 for what we're trying to do here. 
 
-
 Here's where I think the dictionary representation of the board makes my life
 easier: in checking whether the knight has visited every position on the board.
+I don't even have to look at keys, or positions, or anything; just the values
+that represent whether the position has been visited or not. 
 
+The repository where I'm keeping my code for this is here: 
+https://github.com/schnaigs/knightstour
+Yes, my commit messages suck, and I should have committed more often with more
+incremental changes. knightstour4.py is the final version. avg_attempts.py
+runs knightstour4.py a whole bunch of times and calculates the average number
+of attempts it takes to find a successful knights tour, and the standard
+deviation. Here are some stats returned when knightstour4.py was run 100 times, 
+rounded to two decimals:
 
+              avg number of
+              attempts to 
+board size    complete tour    standard deviation
+       1x1             1.00                  0.00                    
+       3x4             4.00                  3.48
+       3x7           206.20                199.87
+       3x8           144.28                162.43
+       3x9           320.45                243.07
+       4x5           274.41                219.17
+       4x6           422.04                291.90
+       4x7           487.64                231.30
+       4x8          5015.27               2788.28
+       4x9         41156.08              26089.68
+       5x5           384.43                390.04
+       5x6          6422.71               5660.11
+       5x7          9399.24               9901.42
+       6x6         10837.56              11197.45
+       6x7         23868.42              21158.42
+       7x7         55510.21              51710.01
 
+I wish I had time to collect more data, and that I had collected more data
+on time (particularly time per attempt).
 
+One thing that's interesting to note is that the standard deviations are
+usually very close to the averages, for each board size. If I knew more math
+I could probably reason out why that is. 
+
+I would love to somehow parallelize this whole thing so that it runs faster.
