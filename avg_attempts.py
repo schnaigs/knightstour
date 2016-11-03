@@ -1,4 +1,4 @@
-import math
+import numpy
 import re
 import subprocess
 import sys
@@ -28,16 +28,15 @@ def main():
             # run found a successful knight's tour
             list_of_attempts.append(found_kt_on_attempt)
         except ValueError:    # run failed to find any knight's tours; 
-                              # don't count it, don't do anything
-            pass
+		pass          # don't count it, don't do anything
 
 
     if list_of_attempts == []:
         sys.exit("no successful knights tours found")
 
-    avg_attempts = float(sum(list_of_attempts)) / len(list_of_attempts)
+    avg_attempts = numpy.mean(list_of_attempts)
     
-    stddev = math.sqrt(sum([math.pow((a - avg_attempts), 2) for a in list_of_attempts])/len(list_of_attempts)) 
+    stddev = numpy.std(list_of_attempts) 
     print avg_attempts
     print stddev
 

@@ -33,7 +33,7 @@ that.
 
 Moving on to my actual program. First we validate input; I wish I had written
 something like "rows = checkarg(sys.argv[1])" etc. because within my
-valid_input() function, I attempt to cast sys.argv[1:] to int anyway, so if
+valid_input() function, I attempt to cast sys.argv[1] etc. to int anyway, so if
 that's successful I should just be able to return the value. 
 
 Anyway, then we assign the command line arguments to more readable names.
@@ -76,6 +76,40 @@ within the knight-moving-loop to check if there are no more possible moves, and
 if there are, pick one and move the knight using that move. Hmm, I wonder if I
 could have written a function that goes like, 
 board = conduct_knights_tour(board, initial_pos, rows, cols). 
-That might look nicer and read more easily.
+That might look nicer and read more easily. Yup, that was easy and it works the
+same. Ok, cool!
+
+As for generating the possible moves, that's relatively straightforward. The
+position being tested must have both the x and y coordinates greater than or
+equal to zero and less than rows or columns, respectively. Also, the position
+being tested must not have been visited previously by the knight. I suppose
+actual_possible_moves could have been represented as a list of tuples, or as a
+tuple of tuples. It doesn't make much of a difference, but again, in general,
+immutable data structures are better for reasons. ¯\_(ツ)_/¯
+
+The board gets printed when a complete knight's tour is found or when all 
+attempts have been exhausted, as per the assignment specification. In my first
+three versions of this, I had a function that *especially* pretty-printed the
+board as if it were a real chess board, i.e.:
+
+8a 8b 8c 8d 8e 8f 8g 8h
+7a 7b 7c 7d 7e 7f 7g 7h
+6a 6b 6c 6d 6e 6f 6g 6h
+5a 5b 5c 5d 5e 5f 5g 5h
+4a 4b 4c 4d 4e 4f 4g 4h
+3a 3b 3c 3d 3e 3f 3g 3h
+2a 2b 2c 2d 2e 2f 2g 2h
+1a 1b 1c 1d 1e 1f 1g 1h
+
+And I think I actually tried to represent the chess board this way in at least
+my first version. But that's not what the output in the assignment looked like,
+and ultimately the output in the assignment is a more sensible representation
+for what we're trying to do here. 
+
+
+Here's where I think the dictionary representation of the board makes my life
+easier: in checking whether the knight has visited every position on the board.
+
+
 
 
