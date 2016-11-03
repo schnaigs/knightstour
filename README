@@ -2,16 +2,25 @@ Allison Schinagle
 CS265 Assignment 2: Knight's Tour
 
 knight.py is the version I submitted by the due date.
+
 knightstour4.py is the version I keep changing little things in past the due
 date. 
-knightstour.py, knightstour2.py, and knightstour3.py all don't work and are
-stupid. 
+
+knightstour.py, knightstour2.py, knightstour3.py, and knightstour5.py all don't 
+work and are stupid. Well, except for knightstour5.py, where I try to implement
+some of the ideas I wanted to implement, which I talk about below.
+ 
 avg_attepmts.py runs knightstour4.py a bunch of times and calculates the
+
 average number of attempts it takes to find a knight's tour, and the standard
 deviation.
+
 run_knights_tour is a shell script that attempts to do the same thing as
+
 avg_attempts.py, but I didn't get very far with that. 
+
 stats is stats, apparently. I don't remember creating this, honestly. 
+
 
 For dimensions 9 or less, I found valid knights tours on the following sized 
 boards:
@@ -44,10 +53,10 @@ that. OH WAIT, those rules applies to closed knight's tours only, which I'm not
 bothering with here. Ok, cool. Yay, reading comprehension. 
 
 
-Moving on to my actual program. First we validate input; I wish I had written
-something like "rows = checkarg(sys.argv[1])" etc. because within my
-valid_input() function, I attempt to cast sys.argv[1] etc. to int anyway, so if
-that's successful I should just be able to return the value. 
+Moving on to my actual program (knight.py). First we validate input; I wish I 
+had written something like "rows = checkarg(sys.argv[1])" etc. because within 
+my valid_input() function, I attempt to cast sys.argv[1] etc. to int anyway, so
+if that's successful I should just be able to return the value. 
 
 Anyway, then we assign the command line arguments to more readable names.
 
@@ -126,10 +135,12 @@ easier: in checking whether the knight has visited every position on the board.
 I don't even have to look at keys, or positions, or anything; just the values
 that represent whether the position has been visited or not. 
 
+
 The repository where I'm keeping my code for this is here: 
 https://github.com/schnaigs/knightstour
 Yes, my commit messages suck, and I should have committed more often with more
 incremental changes. 
+
 
 avg_attempts.py runs knightstour4.py a whole bunch of times and calculates the 
 average number of attempts it takes to find a successful knights tour, and the 
@@ -163,7 +174,9 @@ One thing that's interesting to note is that the standard deviations are
 usually very close to the averages, for each board size. If I knew more math
 I could probably reason out why that is. 
 
+
 I would love to somehow parallelize this whole thing so that it runs faster.
+
 
 For running this program on the boards with higher dimensions and more
 attempts, I would do this:
