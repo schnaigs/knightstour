@@ -1,6 +1,18 @@
 Allison Schinagle
 CS265 Assignment 2: Knight's Tour
 
+knight.py is the version I submitted by the due date.
+knightstour4.py is the version I keep changing little things in past the due
+date. 
+knightstour.py, knightstour2.py, and knightstour3.py all don't work and are
+stupid. 
+avg_attepmts.py runs knightstour4.py a bunch of times and calculates the
+average number of attempts it takes to find a knight's tour, and the standard
+deviation.
+run_knights_tour is a shell script that attempts to do the same thing as
+avg_attempts.py, but I didn't get very far with that. 
+stats is stats, apparently. I don't remember creating this, honestly. 
+
 For dimensions 9 or less, I found valid knights tours on the following sized 
 boards:
 3x4    4x5    5x5    6x6    7x7    8x8*   9x9
@@ -28,7 +40,8 @@ Wikipedia article, it is stated:
 (sequence A165134 in the OEIS)."
 
 Note that a 5x5 board is noted as having solutions. So, I was pretty confused by
-that. 
+that. OH WAIT, those rules applies to closed knight's tours only, which I'm not
+bothering with here. Ok, cool. Yay, reading comprehension. 
 
 
 Moving on to my actual program. First we validate input; I wish I had written
@@ -65,9 +78,11 @@ Then we start a loop to move the knight a bunch of times. The loop will run
 either exactly as many times as there are moves to complete a knight's tour,
 or until there are no more possible moves. 
 
-I would have liked to create a more opaque board class so that I wouldn't have
+I would have liked to create a more opaque board object so that I wouldn't have
 to pass around rows and cols along with the board, but I'm not proficient
-in python enough to make that happen in a reasonable amount of time. 
+in python enough to make that happen in a reasonable amount of time. Actually,
+I'm going to experiment with that now, representing the board as a tuple, 
+(dict, rows, cols). 
 
 Instead of passing knight to a move function and returning either its new
 position or "fail!" (which is how I tried to do it the first three times I
@@ -79,18 +94,18 @@ board = conduct_knights_tour(board, initial_pos, rows, cols).
 That might look nicer and read more easily. Yup, that was easy and it works the
 same. Ok, cool!
 
-As for generating the possible moves, that's relatively straightforward. The
-position being tested must have both the x and y coordinates greater than or
-equal to zero and less than rows or columns, respectively. Also, the position
-being tested must not have been visited previously by the knight. I suppose
-actual_possible_moves could have been represented as a list of tuples, or as a
-tuple of tuples. It doesn't make much of a difference, but again, in general,
-immutable data structures are better for reasons. ¯\_(ツ)_/¯
+Generating possible moves. The position being tested must have both the x and y
+coordinates greater than or equal to zero and less than rows or columns, 
+respectively. Also, the position being tested must not have been visited 
+previously by the knight. I suppose actual_possible_moves could have been 
+represented as a list of tuples, or as a tuple of tuples. It doesn't make 
+much of a difference to me, but again, in general, immutable data structures are 
+better for reasons. ¯\_(ツ)_/¯
 
 The board gets printed when a complete knight's tour is found or when all 
-attempts have been exhausted, as per the assignment specification. In my first
-three versions of this, I had a function that *especially* pretty-printed the
-board as if it were a real chess board, i.e.:
+attempts have been exhausted, as per the assignment's specification. In my 
+first three versions of this, I had a function that *especially* pretty-printed 
+the board as if it were a real chess board, i.e.:
 
 8a 8b 8c 8d 8e 8f 8g 8h
 7a 7b 7c 7d 7e 7f 7g 7h
@@ -114,11 +129,12 @@ that represent whether the position has been visited or not.
 The repository where I'm keeping my code for this is here: 
 https://github.com/schnaigs/knightstour
 Yes, my commit messages suck, and I should have committed more often with more
-incremental changes. knightstour4.py is the final version. avg_attempts.py
-runs knightstour4.py a whole bunch of times and calculates the average number
-of attempts it takes to find a successful knights tour, and the standard
-deviation. Here are some stats returned when knightstour4.py was run 100 times, 
-rounded to two decimals:
+incremental changes. 
+
+avg_attempts.py runs knightstour4.py a whole bunch of times and calculates the 
+average number of attempts it takes to find a successful knights tour, and the 
+standard deviation. Here are some stats returned when knightstour4.py was run 
+100 times, rounded to two decimals:
 
               avg number of
               attempts to 
@@ -148,3 +164,10 @@ usually very close to the averages, for each board size. If I knew more math
 I could probably reason out why that is. 
 
 I would love to somehow parallelize this whole thing so that it runs faster.
+
+For running this program on the boards with higher dimensions and more
+attempts, I would do this:
+python knightstour4.py 8 8 10000000; spd-say "done"
+so that I wouldn't have to keep checking my terminal every five seconds, and
+could go off and do other things. (Let's be real though, I would go back and
+check the terminal every five seconds anyway.)
