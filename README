@@ -1,25 +1,21 @@
 Allison Schinagle
 CS265 Assignment 2: Knight's Tour
 
+https://en.wikipedia.org/wiki/Knight%27s_tour
+
 knight.py is the version I submitted by the due date.
 
 knightstour4.py is the version I keep changing little things in past the due
 date. 
 
 knightstour.py, knightstour2.py, knightstour3.py, and knightstour5.py all don't 
-work and are stupid. Well, except for knightstour5.py, where I try to implement
+work, except for knightstour5.py, where I try to implement
 some of the ideas I wanted to implement, which I talk about below.
  
 avg_attepmts.py runs knightstour4.py a bunch of times and calculates the
 
 average number of attempts it takes to find a knight's tour, and the standard
 deviation.
-
-run_knights_tour is a shell script that attempts to do the same thing as
-
-avg_attempts.py, but I didn't get very far with that. 
-
-stats is stats, apparently. I don't remember creating this, honestly. 
 
 
 For dimensions 9 or less, I found valid knights tours on the following sized 
@@ -32,37 +28,17 @@ boards:
 
 * a normal chess board
 
-even though https://en.wikipedia.org/wiki/Knight%27s_tour says that
-"for any m × n board with m ≤ n, a closed knight's tour is always possible unless 
- one or more of these three conditions are met:
 
-1. m and n are both odd
-2. m = 1, 2, or 4
-3. m = 3 and n = 4, 6, or 8."
-
-Under this rule, boards 3x4, 3x7, 3x8, 3x9, 4x5, 5x5, 5x7, 5x9, 7x7, and 9x9
-would not have valid knights tours, but obviously they do; in this very same
-Wikipedia article, it is stated:
-"The number of directed open tours on an n times n board for n = 1, 2, … are:
-
-1, 0, 0, 0, 1728, 6637920, 165575218320, 19591828170979904. 
-(sequence A165134 in the OEIS)."
-
-Note that a 5x5 board is noted as having solutions. So, I was pretty confused by
-that. OH WAIT, those rules applies to closed knight's tours only, which I'm not
-bothering with here. Ok, cool. Yay, reading comprehension. 
-
-
-Moving on to my actual program (knight.py). First we validate input; I wish I 
+First, input is validated; I wish I 
 had written something like "rows = checkarg(sys.argv[1])" etc. because within 
 my valid_input() function, I attempt to cast sys.argv[1] etc. to int anyway, so
 if that's successful I should just be able to return the value. 
 
-Anyway, then we assign the command line arguments to more readable names.
+Then command line arguments are assigned to more readable names.
 
-Then we attempt a knight's tour.
+Then an open knight's tour is attempted.
 
-First step is to create a board, so now let's look at create_board(rows, cols). 
+First step is to create a board using create_board(rows, cols). 
 
 I chose to represent the board as a dictionary mapping tuples representing
 positions on a board to values (initialized to None) representing potential
@@ -72,74 +48,39 @@ check if None was still in the board at the end of an attempt at a knight's
 tour; if so, the tour was not completed. If I had chosen to represent the board
 as a two-dimensional array, which I tried to do the first three times I tried
 to write this, I would have had to flatten the array and then check for None,
-or something. When I tried that, I still couldn't get the tour to work, and I 
-didn't feel like finding out why; my dictionary representation of the board 
-works just fine. 
+or something. When I tried that, I still couldn't get the tour to work.
 
-We initialize the knight's position to the tuple (0, 0). I used a list at 
+The knight's position is initialized to the tuple (0, 0). I used a list at 
 first, since I figured, I'll want to change the knight's position, but I use a 
 tuple and assign knight_pos a completely new tuple when it moves instead, so that
 I don't have to cast knight_pos to a tuple every time I want to access
-board[knight_pos], cause it looks prettier that way. And cause immutable
-data structures are just generally better, for reasons. ¯\_(ツ)_/¯
+board[knight_pos].
 
 Then we start a loop to move the knight a bunch of times. The loop will run
 either exactly as many times as there are moves to complete a knight's tour,
 or until there are no more possible moves. 
 
-I would have liked to create a more opaque board object so that I wouldn't have
-to pass around rows and cols along with the board, but I'm not proficient
-in python enough to make that happen in a reasonable amount of time. Actually,
-I'm going to experiment with that now, representing the board as a tuple, 
-(dict, rows, cols). 
+I would like to create a more opaque board object so that I wouldn't have
+to pass around rows and cols along with the board. 
 
 Instead of passing knight to a move function and returning either its new
 position or "fail!" (which is how I tried to do it the first three times I
-tried writing this) I just generate a list of possible moves, so I can use that
+tried writing this) I generate a list of possible moves, so I can use that
 within the knight-moving-loop to check if there are no more possible moves, and
-if there are, pick one and move the knight using that move. Hmm, I wonder if I
-could have written a function that goes like, 
-board = conduct_knights_tour(board, initial_pos, rows, cols). 
-That might look nicer and read more easily. Yup, that was easy and it works the
-same. Ok, cool!
+if there are, pick one and move the knight using that move.
 
 Generating possible moves. The position being tested must have both the x and y
 coordinates greater than or equal to zero and less than rows or columns, 
 respectively. Also, the position being tested must not have been visited 
-previously by the knight. I suppose actual_possible_moves could have been 
-represented as a list of tuples, or as a tuple of tuples. It doesn't make 
-much of a difference to me, but again, in general, immutable data structures are 
-better for reasons. ¯\_(ツ)_/¯
+previously by the knight.
 
-The board gets printed when a complete knight's tour is found or when all 
-attempts have been exhausted, as per the assignment's specification. In my 
-first three versions of this, I had a function that *especially* pretty-printed 
-the board as if it were a real chess board, i.e.:
-
-8a 8b 8c 8d 8e 8f 8g 8h
-7a 7b 7c 7d 7e 7f 7g 7h
-6a 6b 6c 6d 6e 6f 6g 6h
-5a 5b 5c 5d 5e 5f 5g 5h
-4a 4b 4c 4d 4e 4f 4g 4h
-3a 3b 3c 3d 3e 3f 3g 3h
-2a 2b 2c 2d 2e 2f 2g 2h
-1a 1b 1c 1d 1e 1f 1g 1h
-
-And I think I actually tried to represent the chess board this way in at least
-my first version. But that's not what the output in the assignment looked like,
-and ultimately the output in the assignment is a more sensible representation
-for what we're trying to do here. 
+The board is printed when a complete knight's tour is found or when all 
+attempts have been exhausted. 
 
 Here's where I think the dictionary representation of the board makes my life
 easier: in checking whether the knight has visited every position on the board.
-I don't even have to look at keys, or positions, or anything; just the values
+I don't even have to look at keys or positions; just the values
 that represent whether the position has been visited or not. 
-
-
-The repository where I'm keeping my code for this is here: 
-https://github.com/schnaigs/knightstour
-Yes, my commit messages suck, and I should have committed more often with more
-incremental changes. 
 
 
 avg_attempts.py runs knightstour4.py a whole bunch of times and calculates the 
@@ -167,16 +108,9 @@ board size    complete tour    standard deviation
        6x7         23868.42              21158.42
        7x7         55510.21              51710.01
 
-I wish I had time to collect more data, and that I had collected more data
-on time (particularly time per attempt).
 
 One thing that's interesting to note is that the standard deviations are
-usually very close to the averages, for each board size. If I knew more math
-I could probably reason out why that is. 
-
-
-I would love to somehow parallelize this whole thing so that it runs faster.
-
+usually very close to the averages, for each board size.
 
 For running this program on the boards with higher dimensions and more
 attempts, I would do this:
